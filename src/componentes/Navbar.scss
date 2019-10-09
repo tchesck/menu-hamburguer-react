@@ -1,0 +1,65 @@
+.Navbar {
+  nav {
+    width: 100%;
+    height: 70px;
+    background-color: orange;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    #menu-hamburguer {
+      width: 50px;
+      height: 40%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-direction: column;
+      span {
+        width: 100%;
+        height: 5px;
+        background-color: white;
+        border-radius: 20px;
+      }
+    }
+  }
+  .menu {
+    width: 100%;
+    height: 400px;
+    background-color: orange;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    transform: translateX(-100%);
+    transition: 0.4s;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    a {
+      margin-left: 30px;
+    }
+  }
+  .ativo {
+    transform: translateX(0);
+  }
+}
+
+
+//   @media(max-width: 1301px
+
+.tirinho{
+    transform: translateX(-100vw);
+    background-color: rgb(195, 0, 255);
+}
+
+.roda1{
+    transform: rotateZ(-45deg);
+    transform-origin: right center;
+    background-color: rgb(255, 0, 0);
+}
+
+.rodou{
+    transform: rotateZ(45deg);
+    transform-origin: right center;
+    position: relative;
+    top: 8px;
+    background-color: rgb(255, 145, 0);
+}
