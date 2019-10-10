@@ -1,63 +1,79 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../Input";
+
 import "./Cadastro.scss";
+import Botao from "../Botao/Botao";
 
 const Cadastro = () => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [count, setCount] = useState("1");
-  const [mensagen, setmensagem] = useState("");
+  const [id, setId] = useState(1);
+  const [count, setCount] = useState(1);
+  const [mensagem, setMensagem] = useState("");
+  const [status, setStatus] = useState();
+
+  const gerarPersonagem = () => {
+    if (id === 494) {
+      setId(1);
+    } else {
+      setId(id + 1)
+    }
+  }
+
+  const resposta = texto => {
+    setMensagem(texto);
+    setTimeout(() => {
+      setMensagem("")
+    }, 1500);
+  }
 
 
-  const [Personagem, setPersonagem] = useState(1);
 
   const handleSubmit = e => {
     e.preventDefault();
-    const payload ={
-      name: nome,
-      email: email,
-      confirm_email: confirmEmail,
-      password: senha
 
+    if (email === confirmEmail) {
+      const payload = {
+        name: nome,
+        email: email,
+        confirm_email: confirmEmail,
+        password: senha
+      }
+      localStorage.setItem(`Dados${count}`, JSON.stringify(payload));
+      setCount(count + 1);
+
+      setNome("");
+      setEmail("");
+      setConfirmEmail("");
+      setSenha("");
+      resposta("Cadastrado com sucesso")
+      setStatus(true)
+
+    } else {
+      resposta("Os emails não correspondem");
+      setStatus(false);
     }
-    localStorage.setItem(`Dados${count}`, JSON.stringify(payload));
-
-    
-
-    setCount(Count +1)
-    setNome("");
-    setEmail("");
-    setConfirmEmail("");
-    setSenha("");
-    setmensagem("irmão já foi cadastrado")
-    setTimeout(()=>{
-      setMensagem("")
-    }, 3000);
   };
 
-  const Acima = () =>{
-    setPersonagem(Personagem +1)
-  };
-
-
-
-  useEffect(()=>{
-    fetch(`https://rickandmortyapi.com/api/character/${Personagem}`,{
-    method : "GET"
-  }).then(result=>{
-    return result.json()
-  }).then(data =>{
-    console.log(data)
-  }).catch(()=>{
-    console.error("deu B.O, reinicia tudo ai man ")
-  })
-},[Personagem])
+  useEffect(() => {
+    fetch(`https://rickandmortyapi.com/api/character/${id}`, {
+      method: "GET"
+    }).then(result => {
+      return result.json()
+    }).then(data => {
+      console.log(data)
+    }).catch(() => {
+      console.error("Erroooooooou, internet ruim ou você que é")
+    })
+  }, [id])
 
   return (
     <div className="Cadastro">
       <h1>Faça seu cadastro</h1>
+      {/* <button onClick={gerarPersonagem}>Gerar personagem</button> */}
+      <p>{mensagem}</p>
       <form onSubmit={handleSubmit}>
         <Input
           value={nome}
@@ -79,6 +95,7 @@ const Cadastro = () => {
           label="Confirmar Email"
           placeholder="Confirme seu email"
           atualizarState={setConfirmEmail}
+          obrigatorio
         />
         <Input
           value={senha}
@@ -87,11 +104,8 @@ const Cadastro = () => {
           placeholder="Digite sua senha"
           atualizarState={setSenha}
         />
-        <button>Cadastrar</button>
-
+        <Botao>Cadastrar</Botao>
       </form>
-        <button onClick={Acima}>add person</button>
-      
     </div>
   );
 };
